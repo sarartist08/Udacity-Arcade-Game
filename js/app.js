@@ -1,103 +1,98 @@
 // ----------------------Enemies---------------------
 
-var Enemy = function(x,y,speed) {
+var Enemy = function(x,y) {
+    'use strict';
     this.x = x;
     this.y = y;
-    this.speed = speed
+    this.speed = Math.floor((Math.random()*200)+100);
     this.sprite = 'images/enemy-bug.png';
 };
 
 
+//moving enemy position
 Enemy.prototype.update = function(dt) {
-    this.x = this.x + this.speed * dt
-    this.offScreenX = 505;
-    this.startingX = -100;
-    if (this.x >=this.offScreenX) {
-        this.x = this.startingX;
-        this.randomSpeed();
+    'use strict';
+    if(this.x <= 505) {
+        this.x = this.x + this.speed * dt;
+    } else {
+        this.x = -2;
     }
-    this.checkCollision
 };
 
-var speedMultiplier = 40
 
-
-Enemy.prototype.randomSpeed = function () {
-    this.speed = speedMultiplier * Math.floor(Math.random()*10 +1);
-};
-
-// Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+    'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
-
-Enemy.prototype.checkCollision = function () {
-    var playerBox = {x: player.x, y: player.y, width: 50, height: 40};
-    var enemyBox = {x: this.x, y: this.y, width: 60, height: 70};
-    if (playerBox.x <enemyBox.x + enemyBox.width &&
-        playerBox.x + playerBox.width > enemyBox.x &&
-        playerBox.y < enemyBox.y + enemyBox.height &&
-        playerBox.y + playerBox.height > enemyBox.y) {
-        this.collisionDetected();
-    }
-};
-
-Enemy.prototype.collisionDetected = function () {
-    player.characterReset();
-}
 
 
 // ----------------Player-----------------
 
 var Player = function () {
-    this.startingX = 200;
-    this.startingY = 400;
-    this.x = this.startingX;
-    this.y = this.startingY;
+    'use strict';
+    this.x = 200
+    this.y = 400
     this.sprite = 'images/char-cat-girl.png';
 };
 
-Player.prototype.characterReset = function () {
-    this.startingX = 200;
-    this.startingY = 400;
-    this.x = this.startingX;
-    this.y - this.startingY;
+//moving player position
+Plyer.prototype.update = function(dt) {
+    'use strict';
+
+    let self = this;
+
+    //if not on edge move left
+    if(this.pressedKey === 'left' && this.x > 0) {
+        this.x -= 100;
+    }
+
+    //if not on edge move right
+    if (this.pressedKey === 'right' && this.x < 400) {
+        this.x += 100;
+    }
+
+    // move up
+    if (this.pressedKey === 'up' && this.y > 0) {
+        this.y -= 90
+    }
+
+    //if not at bottom move down
+    if (this.pressedKey === 'down' && this.y < 400) {
+        this.y += 90
+    }
+
+    this.pressedKey = null;
+
+    //if player reachs water successfully, position reset
+    if (this.y < 0) {
+        this.reset();
+    }
+
+    //touch enemy
+    allEnemies.forEach(function(enemy) {
+        if (self.x >= enemy.x - 25 && self.x <= enemy.x + 25) {
+            if (self.y >= enemy.y - 25 && self.y <= enemy.y + 25){
+                self.reset();
+            }
+        }
+    });
 };
 
-Player.prototype.success = function () {
-    this.characterReset();
-}
-
 Player.prototype.render = function () {
+    'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function (allowedKeys) {
-    switch (allowedKeys) {
-        case "left":
-            if (this.x > 0) {
-                this.x -= 101;
-            }
-            break;
-        case "right":
-            if (this.x < 402) {
-                this.x += 101;
-            }
-            break;
-        case "up":
-            if (this.y < 0) {
-                this.success();
-            } else{
-                this.y -= 83;
-            }
-            break;
-        case "down":
-            if (this.y < 400) {
-                this.y += 83;
-            }
-            break;
-    }
-};
+Player.prototype.handleInput = function (e) {
+    'use strict';
+    this.pressedKey = e
+}
+
+Player.prototype.reset = function () {
+    'use strict';
+    this.x = 200;
+    this.y = 400;
+}
 
 // --------------Instantiate Objects-----------------
 
@@ -105,10 +100,14 @@ var player = new Player();
 
 var allEnemies = [];
 
-for (var i = 0; i < 3; i++) {
-    var startSpeed = speedMultiplier * Math.floor(Math.random() * 10 + 1);
-    allEnemies.push(new Enemy(-100, 60+ (85 * i), startSpeed));
-}
+function displayEnemies () {
+    'use strict';
+    allEnemies.push(new Enemy(0, 50));
+    allEnemies.push(new Enemy(0, 140));
+    allEnemies.push(new Enemy(0, 230));
+};
+
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
