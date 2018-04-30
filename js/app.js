@@ -78,6 +78,7 @@ Player.prototype.update = function(dt) {
 
     //if player reachs water successfully, position reset
     if (this.y < 0) {
+        alert("Success!")
         this.reset();
     }
 
