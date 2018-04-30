@@ -1,10 +1,10 @@
 // ----------------------Enemies---------------------
 
-var Enemy = function(x,y) {
+var Enemy = function(x,y,speed) {
     'use strict';
     this.x = x;
     this.y = y;
-    this.speed = Math.floor((Math.random()*200)+100);
+    this.speed = speed;
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -12,13 +12,21 @@ var Enemy = function(x,y) {
 //moving enemy position
 Enemy.prototype.update = function(dt) {
     'use strict';
-    if(this.x <= 505) {
-        this.x = this.x + this.speed * dt;
-    } else {
-        this.x = -2;
+    this.x = this.x + this.speed * dt;
+    this.offScreenX = 505;
+    this.startingX = -100;
+    if (this.x >= this.offScreenX) {
+        this.x = this.startingX;
+        this.randomSpeed();
     }
 };
 
+var speedMultiplier = 40
+
+Enemy.prototype.randomSpeed = function () {
+    'use strict';
+    this.speed = speedMultiplier * Math.floor(Math.random() * 10 + 1);
+};
 
 Enemy.prototype.render = function() {
     'use strict';
@@ -100,16 +108,11 @@ var player = new Player();
 
 var allEnemies = [];
 
-function displayEnemies () {
-    'use strict';
-    allEnemies.push(new Enemy(0, 50));
-    allEnemies.push(new Enemy(0, 140));
-    allEnemies.push(new Enemy(0, 230));
-};
+for (var i =0; i < 3; i++) {
+    var startSpeed = speedMultiplier * Math.floor(Math.random() * 10 + 1);
+    allEnemies.push(new Enemy(-100, 60+ (85 * i), startSpeed));
+}
 
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
