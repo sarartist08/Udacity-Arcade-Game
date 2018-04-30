@@ -1,5 +1,6 @@
 // ----------------------Enemies---------------------
 
+//enemy set up
 var Enemy = function(x,y,speed) {
     'use strict';
     this.x = x;
@@ -21,13 +22,16 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
+//since used again it is outside the function
 var speedMultiplier = 40
 
+//sets random movement speed for enemies
 Enemy.prototype.randomSpeed = function () {
     'use strict';
     this.speed = speedMultiplier * Math.floor(Math.random() * 10 + 1);
 };
 
+//enemy on screen
 Enemy.prototype.render = function() {
     'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -36,6 +40,7 @@ Enemy.prototype.render = function() {
 
 // ----------------Player-----------------
 
+//player set up
 var Player = function () {
     'use strict';
     this.x = 200
@@ -76,7 +81,7 @@ Player.prototype.update = function(dt) {
         this.reset();
     }
 
-    //touch enemy
+    //enemy collision
     allEnemies.forEach(function(enemy) {
         if (self.x >= enemy.x - 25 && self.x <= enemy.x + 25) {
             if (self.y >= enemy.y - 25 && self.y <= enemy.y + 25){
@@ -86,16 +91,19 @@ Player.prototype.update = function(dt) {
     });
 };
 
+//player on screen
 Player.prototype.render = function () {
     'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//makes arrow keys work for player
 Player.prototype.handleInput = function (e) {
     'use strict';
     this.pressedKey = e
 }
 
+//if collision or success reset
 Player.prototype.reset = function () {
     'use strict';
     this.x = 200;
@@ -104,15 +112,19 @@ Player.prototype.reset = function () {
 
 // --------------Instantiate Objects-----------------
 
+//instantiate player
 var player = new Player();
 
+//empty enemies array
 var allEnemies = [];
 
+//instantiate enemies into array
 for (var i =0; i < 3; i++) {
     var startSpeed = speedMultiplier * Math.floor(Math.random() * 10 + 1);
     allEnemies.push(new Enemy(-100, 60+ (85 * i), startSpeed));
 }
 
+//arrow key press EventListener
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
