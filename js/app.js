@@ -80,7 +80,7 @@ Player.prototype.update = function(dt) {
 
 Player.prototype.render = function () {
     'use strict';
-    ctx.drawImage(Resources.get("images/char-cat-girl.png"), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 Player.prototype.handleInput = function (e) {
