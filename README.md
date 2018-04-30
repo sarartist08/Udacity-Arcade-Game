@@ -1,6 +1,23 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this [rubric](https://review.udacity.com/#!/projects/2696458597/rubric) for self-checking their submission. Make sure the functions you write are **object-oriented** - either class functions (like Player and Enemy) or class prototype functions such as Enemy.prototype.checkCollisions, and that the keyword 'this' is used appropriately within your class and class prototype functions to refer to the object the function is called upon. Also be sure that the **readme.md** file is updated with your instructions on both how to 1. Run and 2. Play your arcade game.
+This is my Frogger clone for Udacitiy's Front-End Web Developer Nanodegree. 
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+Installation:
+
+* Download the repository:
+* Double-click index.html to open the game in your browser.
+
+Gameplay: 
+
+* Use arrow keys to move the player
+* The objective is to reach the water without hitting the bugs
+* Successful reaching of the water sends you to the starting point a winner
+* If you hit a bug along the way, you will be sent back to the starting point to try again
+
+Future Possible Additions:
+
+* Point/Life system
+* Various playable characters
+* Collectable items
+* Different Modes (Timed, Never-Ending, Sudden Death)
